@@ -1,15 +1,16 @@
+import { Route, Routes } from 'react-router-dom';
 import './App.css';
-import Carousel from './Components/Carousel';
-import Footer from './Components/Footer';
-import Navbar from './Components/Navbar';
+import Appointment from './Components/Appointment';
+import Home from './Components/Home';
 
 
 function App() {
   return (
     <div >
-      <Navbar/>
-      <Carousel/>
-      <Footer/>
+        <Routes>
+          <Route path='/' element={<Home/>}/>
+          <Route path='/appointment' element={<Appointment/>}/>
+        </Routes>
     </div>
   );
 }

@@ -67,7 +67,7 @@ const Navbar = () => {
             direction={'row'}
             spacing={6}>
             <Button as={'a'} fontSize={'sm'} fontWeight={400} variant={'link'} href={'#'}>
-              Sign In
+              View Health Records
             </Button>
             <Button
               as={'a'}
@@ -76,11 +76,11 @@ const Navbar = () => {
               fontWeight={600}
               color={'white'}
               bg={'pink.400'}
-              href={'#'}
+              href={'/appointment'}
               _hover={{
                 bg: 'pink.300',
               }}>
-              Sign Up
+              Book Appointment
             </Button>
           </Stack>
         </Flex>
