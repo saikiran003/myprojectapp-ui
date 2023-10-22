@@ -13,67 +13,86 @@ import {
   Input,
   Select,
   SimpleGrid,
-  InputGroup,
   Textarea,
   FormHelperText,
-  InputRightElement,
+  FormErrorMessage,
 } from '@chakra-ui/react'
 
 import { useToast } from '@chakra-ui/react'
 
-const Form1 = () => {
-    const [show, setShow] = useState(false)
-    const handleClick = () => setShow(!show)
+const Form1 = ({handleInputChange,emailError,mobileError}) => {
+    // const [show, setShow] = useState(false)
+    // const handleClick = () => setShow(!show)
     return (
       <>
         <Heading w="100%" textAlign={'center'} fontWeight="normal" mb="2%">
           Appointment Form
         </Heading>
         <Flex>
-          <FormControl mr="5%">
+          <FormControl mr="5%" mb="2%" isRequired>
             <FormLabel htmlFor="first-name" fontWeight={'normal'}>
               First name
             </FormLabel>
-            <Input id="first-name" placeholder="First name" />
+            <Input id="first-name" placeholder="First name" onChange={(e) => handleInputChange('firstName', e.target.value)} />
           </FormControl>
   
-          <FormControl>
+          <FormControl isRequired>
             <FormLabel htmlFor="last-name" fontWeight={'normal'}>
               Last name
             </FormLabel>
-            <Input id="last-name" placeholder="First name" />
+            <Input id="last-name" placeholder="First name" onChange={(e) => handleInputChange('lastName', e.target.value)}/>
           </FormControl>
         </Flex>
-        <FormControl mt="2%">
+        <Flex>
+          <FormControl mr="5%" isRequired>
+            <FormLabel htmlFor="first-name" fontWeight={'normal'}>
+              Gender
+            </FormLabel>
+            <Select
+              id="country"
+              name="country"
+              autoComplete="country"
+              placeholder="Select option"
+              focusBorderColor="brand.400"
+              shadow="sm"
+              size="md"
+              w="full"
+              rounded="md"
+              onChange={(e) => handleInputChange('gender', e.target.value)}
+              >
+              <option>Male</option>
+              <option>Female</option>
+              <option>Others</option>
+            </Select>
+          </FormControl>
+  
+          <FormControl isRequired>
+            <FormLabel htmlFor="last-name" fontWeight={'normal'}>
+              Age
+            </FormLabel>
+            <Input type="number" id="last-name" placeholder="First name" onChange={(e) => handleInputChange('age', e.target.value)}/>
+          </FormControl>
+        </Flex>
+        <FormControl mt="2%" isInvalid={emailError}>
           <FormLabel htmlFor="email" fontWeight={'normal'}>
             Email address
           </FormLabel>
-          <Input id="email" type="email" />
-          <FormHelperText>We&apos;ll never share your email.</FormHelperText>
+          <Input id="email" type="email" onChange={(e) => handleInputChange('email', e.target.value)}/>
+          {emailError ? <FormErrorMessage>Please enter valid email address</FormErrorMessage> : <FormHelperText>We&apos;ll never share your email.</FormHelperText>}
         </FormControl>
   
-        <FormControl>
-          <FormLabel htmlFor="password" fontWeight={'normal'} mt="2%">
-            Password
+        <FormControl isInvalid={mobileError} isRequired>
+          <FormLabel htmlFor="mobilenumber" fontWeight={'normal'} mt="2%">
+            Mobile Number
           </FormLabel>
-          <InputGroup size="md">
-            <Input
-              pr="4.5rem"
-              type={show ? 'text' : 'password'}
-              placeholder="Enter password"
-            />
-            <InputRightElement width="4.5rem">
-              <Button h="1.75rem" size="sm" onClick={handleClick}>
-                {show ? 'Hide' : 'Show'}
-              </Button>
-            </InputRightElement>
-          </InputGroup>
+          <Input type='number' placeholder='Phone number' onChange={(e) => handleInputChange('mobileNumber', e.target.value)}/>
+          {mobileError && (<FormErrorMessage>Please enter valid mobile number</FormErrorMessage>)}
         </FormControl>
       </>
     )
   }
 
-  const Form2 = () => {
+  const Form2 = ({handleInputChange}) => {
     return (
       <>
         <Heading w="100%" textAlign={'center'} fontWeight="normal" mb="2%">
@@ -99,7 +118,9 @@ const Form1 = () => {
             shadow="sm"
             size="sm"
             w="full"
-            rounded="md">
+            rounded="md"
+            onChange={(e) => handleInputChange('country', e.target.value)}
+            >
             <option>United States</option>
             <option>Canada</option>
             <option>Mexico</option>
@@ -128,6 +149,7 @@ const Form1 = () => {
             size="sm"
             w="full"
             rounded="md"
+            onChange={(e) => handleInputChange('streetAddress', e.target.value)}
           />
         </FormControl>
   
@@ -153,6 +175,7 @@ const Form1 = () => {
             size="sm"
             w="full"
             rounded="md"
+            onChange={(e) => handleInputChange('city', e.target.value)}
           />
         </FormControl>
   
@@ -178,6 +201,7 @@ const Form1 = () => {
             size="sm"
             w="full"
             rounded="md"
+            onChange={(e) => handleInputChange('state', e.target.value)}
           />
         </FormControl>
   
@@ -194,7 +218,7 @@ const Form1 = () => {
             ZIP / Postal
           </FormLabel>
           <Input
-            type="text"
+            type="number"
             name="postal_code"
             id="postal_code"
             autoComplete="postal-code"
@@ -203,13 +227,14 @@ const Form1 = () => {
             size="sm"
             w="full"
             rounded="md"
+            onChange={(e) => handleInputChange('postalCode', e.target.value)}
           />
         </FormControl>
       </>
     )
   }
   
-  const Form3 = () => {
+  const Form3 = ({handleInputChange}) => {
     return (
       <>
         <Heading w="100%" textAlign={'center'} fontWeight="normal">
@@ -217,6 +242,21 @@ const Form1 = () => {
         </Heading>
         <SimpleGrid columns={1} spacing={6}>
           <FormControl id="email" mt={1}>
+            <FormLabel
+            fontSize="sm"
+            fontWeight="md"
+            color="gray.700"
+            _dark={{
+              color: 'gray.50',
+            }}>
+              Pick the Date
+            </FormLabel>
+              <Input
+                placeholder="Select Date and Time"
+                size="md"
+                type="datetime-local"
+                onChange={(e) => handleInputChange('dateAndTime', e.target.value)}
+              />
             <FormLabel
               fontSize="sm"
               fontWeight="md"
@@ -234,6 +274,7 @@ const Form1 = () => {
               fontSize={{
                 sm: 'sm',
               }}
+              onChange={(e) => handleInputChange('issue', e.target.value)}
             />
             <FormHelperText>
               Brief description for your problem. so that we can help you better.
@@ -249,6 +290,83 @@ const Appointment = () => {
     const toast = useToast()
     const [step, setStep] = useState(1)
     const [progress, setProgress] = useState(33.33)
+    const [emailError,setEmailError] = useState(false)
+    const [mobileError,setMobileError] = useState(false)
+    const [formData, setFormData] = useState({
+      firstName: '',
+      lastName: '',
+      gender: '',
+      age: '',
+      email: '',
+      mobileNumber: '',
+      country: '',
+      streetAddress: '',
+      city: '',
+      state: '',
+      postalCode: '',
+      dateAndTime: '',
+      issue: '',
+    });
+
+    const handleInputChange = (field, value) => {
+      // Update the form data state when an input field changes
+      setFormData({
+        ...formData,
+        [field]: value,
+      });
+    };
+
+    const handleNext = () => {
+      let emailRegex = new RegExp(/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/)
+      let mobileRegex = new RegExp(/^\d{10}$/)
+      // setStep(step + 1)
+      if(step===1){
+        if(!emailRegex.test(formData.email)) setEmailError(true)
+        if(!mobileRegex.test(formData.mobileNumber)) setMobileError(true)
+        if(formData.firstName.length>3 && formData.lastName && formData.gender && formData.age <=100 && !emailError && ! mobileError) setStep(step + 1)
+        else {
+          toast({
+            title: 'Some fields are missing.',
+            description: "Please fill all required fields",
+            status: 'warning',
+            duration: 3000,
+            isClosable: true,
+            position: 'top-right'
+          })
+        }
+      }
+      if(step === 2) {
+        if(formData.postalCode.length !== 6){
+          toast({
+            title: 'Postal Code',
+            description: "Please fill correct postal code.",
+            status: 'warning',
+            duration: 3000,
+            isClosable: true,
+            position: 'top-right'
+          })
+        } else {
+          setStep(step + 1)
+          setProgress(progress + 33.33)
+        }
+        
+      }
+      if (step === 3) {
+        setProgress(100)
+      } 
+    }
+
+    const handleSubmit = () =>{
+      toast({
+        title: 'Patient Appointment',
+        description: "Your Appointment with doctor was successfull",
+        status: 'success',
+        duration: 3000,
+        isClosable: true,
+        position: 'top-right'
+      })
+    }
+
   return (
     <>
       <Box
@@ -260,7 +378,7 @@ const Appointment = () => {
         m="10px auto"
         as="form">
         <Progress hasStripe value={progress} mb="5%" mx="5%" isAnimated></Progress>
-        {step === 1 ? <Form1 /> : step === 2 ? <Form2 /> : <Form3 />}
+        {step === 1 ? <Form1 handleInputChange={handleInputChange} emailError={emailError} mobileError={mobileError}/> : step === 2 ? <Form2 handleInputChange={handleInputChange}/> : <Form3 handleInputChange={handleInputChange}/>}
         <ButtonGroup mt="5%" w="100%">
           <Flex w="100%" justifyContent="space-between">
             <Flex>
@@ -279,14 +397,7 @@ const Appointment = () => {
               <Button
                 w="7rem"
                 isDisabled={step === 3}
-                onClick={() => {
-                  setStep(step + 1)
-                  if (step === 3) {
-                    setProgress(100)
-                  } else {
-                    setProgress(progress + 33.33)
-                  }
-                }}
+                onClick={handleNext}
                 colorScheme="teal"
                 variant="outline">
                 Next
@@ -297,16 +408,7 @@ const Appointment = () => {
                 w="7rem"
                 colorScheme="red"
                 variant="solid"
-                onClick={() => {
-                  toast({
-                    title: 'Patient Appointment',
-                    description: "Your Appointment with doctor was successfull",
-                    status: 'success',
-                    duration: 3000,
-                    isClosable: true,
-                    position: 'top-right'
-                  })
-                }}>
+                onClick={handleSubmit}>
                 Submit
               </Button>
             ) : null}
